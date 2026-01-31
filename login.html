@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Expense Tracker - Login</title>
+<style>
+  body { font-family: Arial; background: #f4f4f4; padding: 20px; }
+  .box { background: #fff; padding: 15px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+  input, button { width: 100%; padding: 8px; margin: 5px 0; }
+  button { cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Login / Signup</h2>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="signup()">Sign Up</button>
+  <button onclick="login()">Login</button>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBepaIsV6bFdwFptQAPANVW7YV9jIe2IZU",
+    authDomain: "expense-tracker-app-99db5.firebaseapp.com",
+    projectId: "expense-tracker-app-99db5",
+    storageBucket: "expense-tracker-app-99db5.appspot.com",
+    messagingSenderId: "554693088534",
+    appId: "1:554693088534:web:81ab35f77aee0f953b2c37"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Signup
+  window.signup = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email.value, password.value);
+      alert("Signed up! Redirecting...");
+      window.location = "app.html";
+    } catch (err) { alert(err.message); }
+  };
+
+  // Login
+  window.login = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      alert("Logged in! Redirecting...");
+      window.location = "app.html";
+    } catch (err) { alert(err.message); }
+  };
+
+  // Auto redirect if already logged in
+  onAuthStateChanged(auth, user => {
+    if (user) window.location = "app.html";
+  });
+</script>
+
+</body>
+</html>
